@@ -44,6 +44,8 @@ group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   # This gem is a port of Perl's Data::Faker library that generates fake data.
   gem "faker"
+  # This is a small gem which causes rails console to open pry. It therefore depends on pry.
+  gem 'pry-rails'
 end
 
 group :development do
