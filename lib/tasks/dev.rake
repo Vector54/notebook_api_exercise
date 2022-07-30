@@ -1,16 +1,15 @@
 namespace :dev do
   desc "Configura ambiente de desenvolvimento"
   task setup: :environment do
-    p 'Cadastrando contatos.'
+    puts 'Cadastrando contatos.'.bg_green
     100.times do |i|
-      print '.'
+      print '.'.green
       Contact.create!(
         name: Faker::Name.name,
         email: Faker::Internet.email,
         birthdate: Faker::Date.between(from: 65.years.ago, to: 18.years.ago)
       )
     end
-    p 'Contatos cadastrados com sucesso.'
+    puts "\nContatos cadastrados com sucesso.".bg_green
   end
-
 end
