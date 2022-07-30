@@ -1,6 +1,10 @@
 namespace :dev do
   desc "Configs development enviroment"
   task setup: :environment do
+    puts 'Reseting database...'.bg_red
+
+    %x(rails db:reset)
+
     puts 'Creating kinds of contacts.'.bg_green
     kinds = %w(Friend Commercial Known)
 
@@ -35,5 +39,16 @@ namespace :dev do
       end
     end
     puts "\n#{Phone.count} phones were created successfully.".bg_green
+
+    puts 'Creating addresses.'.bg_green
+    Contact.all.each do |ctt|
+      Address.create!(
+        street: Faker::Address.street_address,
+        city: Faker::Address.city,
+        contact: ctt
+      )
+      print '.'.green
+    end
+    puts "\n#{Address.count} addresses were created successfully.".bg_green
   end
 end
