@@ -5,12 +5,15 @@ class ContactsController < ApplicationController
   def index
     @contacts = Contact.all
 
-    render json: @contacts
+    render jsonapi: @contacts
   end
 
   # GET /contacts/1
   def show
-    render json: @contact, include: [:kind, :phones, :address]
+    render jsonapi: @contact, include: [:kind, :phones, :address], 
+    fields: { 
+      phones: [:number], addresses: [:street, :city], kinds: [:description] 
+    }
   end
 
   # POST /contacts
@@ -18,18 +21,18 @@ class ContactsController < ApplicationController
     @contact = Contact.new(contact_params)
 
     if @contact.save
-      render json: @contact, include: [:kind, :phones, :address], status: :created, location: @contact
+      render jsonapi: @contact, include: [:kind, :phones, :address], status: :created, location: @contact
     else
-      render json: @contact.errors, status: :unprocessable_entity
+      render jsonapi_errors: @contact.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /contacts/1
   def update
     if @contact.update(contact_params)
-      render json: @contact, include: [:kind, :phones, :address]
+      render jsonapi: @contact, include: [:kind, :phones, :address]
     else
-      render json: @contact.errors, status: :unprocessable_entity
+      render jsonapi_errors: @contact.errors, status: :unprocessable_entity
     end
   end
 

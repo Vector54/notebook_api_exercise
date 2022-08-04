@@ -5,12 +5,12 @@ class KindsController < ApplicationController
   def index
     @kinds = Kind.all
 
-    render json: @kinds
+    render jsonapi: @kinds 
   end
 
   # GET /kinds/1
   def show
-    render json: @kind
+    render jsonapi: @kind
   end
 
   # POST /kinds
@@ -18,18 +18,18 @@ class KindsController < ApplicationController
     @kind = Kind.new(kind_params)
 
     if @kind.save
-      render json: @kind, status: :created, location: @kind
+      render jsonapi: @kind, status: :created, location: @kind
     else
-      render json: @kind.errors, status: :unprocessable_entity
+      render jsonapi_errors: @kind.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /kinds/1
   def update
     if @kind.update(kind_params)
-      render json: @kind
+      render jsonapi: @kind
     else
-      render json: @kind.errors, status: :unprocessable_entity
+      render jsonapi_errors: @kind.errors, status: :unprocessable_entity
     end
   end
 
