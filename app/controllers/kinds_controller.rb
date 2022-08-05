@@ -1,5 +1,6 @@
 class KindsController < ApplicationController
   before_action :set_kind, only: %i[ show update destroy ]
+  deserializable_resource :kind, only: [:create, :update]
 
   # GET /kinds
   def index
