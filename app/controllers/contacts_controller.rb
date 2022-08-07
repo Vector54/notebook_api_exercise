@@ -38,6 +38,8 @@ class ContactsController < ApplicationController
 
   # DELETE /contacts/1
   def destroy
+    Phone.where(contact: @contact).each {|p| p.destroy}
+    Address.where(contact: @contact).each {|a| a.destroy}
     @contact.destroy
   end
 
@@ -49,7 +51,12 @@ class ContactsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def contact_params
-      deserializable_params = params[:data].as_json
-      DeserializableContact.call(deserializable_params)
+      contact_params = DeserializableContact.call(params[:data].as_json)
+
+      if contact_params.empty?
+        raise ActionController::ParameterMissing.exception(:contact)
+      else
+        return contact_params
+      end
     end
 end
