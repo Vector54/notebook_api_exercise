@@ -49,6 +49,8 @@ group :development, :test do
   gem "faker"
   # This is a small gem which causes rails console to open pry. It therefore depends on pry.
   gem 'pry-rails'
+  # brings the RSpec testing framework to Ruby on Rails as a drop-in alternative to its default testing framework, Minitest.
+  gem 'rspec-rails'
 end
 
 group :development do
