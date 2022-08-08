@@ -1,8 +1,12 @@
 class PhonesController < ApplicationController
   before_action :set_contact
 
+  def destroy
+    Phone.find(params[:id]).destroy
+  end
+
   def update
-    @phone = Phone.find(params[:id])
+    @phone = Phone.find(deserialized[:id])
 
     if @phone.update(phone_params)
       render jsonapi: @phone
@@ -33,12 +37,12 @@ class PhonesController < ApplicationController
     end
 
     def phone_params
-      phone_params = DeserializablePhone.call(params[:data].as_json)
+      ActionController::Parameters.new(deserialized).permit(
+        :number
+      )
+    end
 
-      if phone_params.empty?
-        raise ActionController::ParameterMissing.exception(:phone)
-      else
-        return phone_params
-      end
+    def deserialized
+      deserialized = DeserializablePhone.call(params[:data].as_json)
     end
 end

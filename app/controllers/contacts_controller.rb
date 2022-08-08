@@ -51,12 +51,15 @@ class ContactsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def contact_params
-      contact_params = DeserializableContact.call(params[:data].as_json)
+      ActionController::Parameters.new(deserialized).permit(
+        :name, :email, :birthdate, :kind_id, 
+        phones_attributes: [:number, :id],
+        address_attributes: [:street, :city, :id] 
+      )
+    end
 
-      if contact_params.empty?
-        raise ActionController::ParameterMissing.exception(:contact)
-      else
-        return contact_params
-      end
+    # Deserializes incoming json.
+    def deserialized
+      deserialized = DeserializableContact.call(params[:data].as_json)
     end
 end

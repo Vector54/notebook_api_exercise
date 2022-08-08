@@ -33,9 +33,9 @@ RSpec.describe "Phones", type: :request do
     end 
   end
 
-  describe "POST /contacts/1/phones" do
+  describe "POST /contacts/1/phone" do
     it "creates a new Phone" do
-      post "/contacts/#{@contact.id}/phones", params: {
+      post "/contacts/#{@contact.id}/phone", params: {
         data: {
           type: "phones",
           attributes: {
@@ -51,7 +51,7 @@ RSpec.describe "Phones", type: :request do
     end 
 
     it "does not create a new Phone" do
-      post "/contacts/#{@contact.id}/phones", params: {
+      post "/contacts/#{@contact.id}/phone", params: {
         data: {
           type: "phones",
           attributes: {
@@ -67,11 +67,12 @@ RSpec.describe "Phones", type: :request do
     end 
   end
 
-  describe "PATCH /contacts/1/phones" do
+  describe "PATCH /contacts/1/phone" do
     it "updates an existing Phone" do
-      patch "/contacts/#{@contact.id}/phones/#{@contact.phones.first.id}", params: {
+      patch "/contacts/#{@contact.id}/phone", params: {
         data: {
           type: "phones",
+          id: @contact.phones.first.id,
           attributes: {
             number: "123456789"
           }
@@ -85,9 +86,10 @@ RSpec.describe "Phones", type: :request do
     end 
 
     it "does not update an existing Phone" do
-      patch "/contacts/#{@contact.id}/phones/#{@contact.phones.first.id}", params: {
+      patch "/contacts/#{@contact.id}/phone", params: {
         data: {
           type: "phones",
+          id: @contact.phones.first.id,
           attributes: {
             number: ""
           }
@@ -99,5 +101,15 @@ RSpec.describe "Phones", type: :request do
       expect(response.body).to include "Number não pode ficar em branco"
       expect(Phone.count).to eq 2
     end 
+  end
+
+  describe "DELETE /contacts/1/phones/1" do
+    it "destroys a phone from a contact" do
+      delete "/contacts/#{@contact.id}/phones/#{@contact.phones.first.id}",
+      headers: header
+
+      expect(response.status).to eq 204
+      expect(@contact.phones.count).to eq 1
+    end
   end
 end

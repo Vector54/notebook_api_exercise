@@ -48,12 +48,13 @@ class KindsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def kind_params
-      kind_params = DeserializableKind.call(params[:data].as_json)
-      
-      if kind_params.empty?
-        raise ActionController::ParameterMissing.exception(:kind)
-      else
-        return kind_params
-      end
+      ActionController::Parameters.new(deserialized).permit(
+        :description
+      )
+    end
+
+    # Deserializes incoming json.
+    def deserialized
+      deserialized = DeserializableKind.call(params[:data].as_json)
     end
 end

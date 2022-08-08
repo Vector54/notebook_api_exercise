@@ -26,17 +26,20 @@ class AddressesController < ApplicationController
   end
 
   private
+    # Set contact for actions searches.
     def set_contact
       @contact = Contact.find(params[:contact_id])
     end
 
+    # Only allow a list of trusted parameters through.
     def address_params
-      address_params = DeserializableAddress.call(params[:data].as_json)
+      ActionController::Parameters.new(deserialized).permit(
+        :street, :city
+      )
+    end
 
-      if address_params.empty?
-        raise ActionController::ParameterMissing.exception(:address)
-      else
-        return address_params
-      end
+    # Deserializes incoming json.
+    def deserialized
+      deserialized = DeserializableAddress.call(params[:data].as_json)
     end
 end
