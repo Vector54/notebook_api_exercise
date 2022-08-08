@@ -1,0 +1,8 @@
+Description:
+    Generates brand new stinking hot deserializable class for jsonapi-rails gem
+
+Example:
+    bin/rails generate my_generators:deserializable Thing
+
+    This will create:
+        app/deserializable/deserializable_thing.rb

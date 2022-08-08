@@ -1,8 +1,8 @@
 class SerializableAddress < JSONAPI::Serializable::Resource
   type 'addresses'
-  attribute :street
-  attribute :city
-  attribute :created_at
-  attribute :updated_at
-  belongs_to :contact
+  attributes :street, :city, :created_at, :updated_at
+
+  belongs_to :contact do
+    link(:related) {"http://localhost:3000/contacts/#{@object.contact.id}"}
+  end
 end

@@ -11,8 +11,15 @@ class SerializableContact < JSONAPI::Serializable::Resource
   link(:self) {"http://localhost:3000/contacts/#{@object.id}"}
 
   belongs_to :kind do
-    link(:related) {"http://localhost:3000/kinds/#{@object.kind_id}"}
+    link(:self) {"http://localhost:3000/contacts/#{@object.id}/relationships/kind"}
+    link(:related) {"http://localhost:3000/contacts/#{@object.id}/kind"}
   end
-  has_one :address
-  has_many :phones
+  has_one :address do
+    link(:self) {"http://localhost:3000/contacts/#{@object.id}/relationships/address"}
+    link(:related) {"http://localhost:3000/contacts/#{@object.id}/address"}
+  end
+  has_many :phones do
+    link(:self) {"http://localhost:3000/contacts/#{@object.id}/relationships/phones"}
+    link(:related) {"http://localhost:3000/contacts/#{@object.id}/phones"}
+  end
 end
