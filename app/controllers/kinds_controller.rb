@@ -1,6 +1,10 @@
 class KindsController < ApplicationController
+  # TOKEN = "secret123"
+  # http_basic_authenticate_with name: "Victor", password: "secret"
+  # before_action :authenticate, except: [ :index ]
+
+  before_action :authenticate_user!, except: %i[ index ]
   before_action :set_kind, only: %i[ show update destroy ]
-  deserializable_resource :kind, only: [:create, :update]
 
   # GET /kinds
   def index
@@ -57,4 +61,15 @@ class KindsController < ApplicationController
     def deserialized
       deserialized = DeserializableKind.call(params[:data].as_json)
     end
+
+    # # Auntenticaçõ.
+    # def authenticate
+    #   authenticate_or_request_with_http_token do |token, options|
+    #     # Compare the tokens in a time-constant manner, to mitigate
+    #     # timing attacks.
+    #     # ActiveSupport::SecurityUtils.secure_compare(token, TOKEN)
+    #     hmac_secret = 'my$ecretK3y'
+    #     JWT.decode token, hmac_secret, true, { algorithm: 'HS256' }
+    #   end
+    # end
 end
