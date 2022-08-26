@@ -50,12 +50,14 @@ RSpec.describe "/contacts", type: :request do
 
   describe "GET /index" do
     it "renders a successful response" do
-      Contact.create! valid_attributes.merge({kind_id: @kind.id})
+      30.times do
+        Contact.create! valid_attributes.merge({kind_id: @kind.id})
+      end
 
-      get contacts_url, headers: { "ACCEPT" => "application/vnd.api+json" }
+      get "/contacts?version=1.0", headers: { "ACCEPT" => "application/vnd.api+json" }
 
       expect(response).to be_successful
-      expect(response.body).to include "Jailson"
+      expect(response.body).to include "\"id\":\"30\""
     end
   end
 
@@ -63,7 +65,7 @@ RSpec.describe "/contacts", type: :request do
     it "renders a successful response" do
       contact = Contact.create! valid_attributes.merge({kind_id: @kind.id})
 
-      get contact_url(contact), headers: { "ACCEPT" => "application/vnd.api+json" }
+      get "/contacts/#{contact.id}?version=1.0", headers: { "ACCEPT" => "application/vnd.api+json" }
 
       expect(response).to be_successful
       expect(response.body).to include "684864490"
@@ -73,7 +75,7 @@ RSpec.describe "/contacts", type: :request do
   describe "POST /create" do
     context "with valid parameters" do
       it "creates a new Contact" do
-        post contacts_url, params: {
+        post "/contacts?version=1.0", params: {
           data: {
             type: "contacts",
             attributes: valid_attributes, 
@@ -90,7 +92,7 @@ RSpec.describe "/contacts", type: :request do
 
     context "with invalid parameters" do
       it "does not create a new Contact" do
-        post contacts_url, params: {
+        post "/contacts?version=1.0", params: {
           data: {
             type: "contacts",
             attributes: invalid_attributes, 
@@ -138,7 +140,7 @@ RSpec.describe "/contacts", type: :request do
 
       it "updates the requested contact" do
         contact = Contact.create! valid_attributes.merge({kind_id: @kind.id})
-        patch "/contacts/#{contact.id}", params: {
+        patch "/contacts/#{contact.id}?version=1.0", params: {
           data: {
             type: "contacts",
             attributes: new_attributes,
@@ -159,7 +161,7 @@ RSpec.describe "/contacts", type: :request do
       it "does not update the requested contact" do
         contact = Contact.create! valid_attributes.merge({kind_id: @kind.id})
 
-        patch "/contacts/#{contact.id}", params: {
+        patch "/contacts/#{contact.id}?version=1.0", params: {
           data: {
             type: "contacts",
             attributes: invalid_attributes,
@@ -178,7 +180,7 @@ RSpec.describe "/contacts", type: :request do
     it "destroys the requested contact" do
       contact = Contact.create! valid_attributes.merge({kind_id: @kind.id})
       expect {
-        delete contact_url(contact), headers: { "ACCEPT" => "application/vnd.api+json" }
+        delete "/contacts/#{contact.id}?version=1.0", headers: { "ACCEPT" => "application/vnd.api+json" }
       }.to change(Contact, :count).by(-1)
     end
   end

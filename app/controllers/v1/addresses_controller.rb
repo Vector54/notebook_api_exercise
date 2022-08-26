@@ -1,4 +1,4 @@
-class AddressesController < ApplicationController
+class V1::AddressesController < ApplicationController
   before_action :set_contact
   
   def update
@@ -22,7 +22,7 @@ class AddressesController < ApplicationController
   def show
     @address = @contact.address
 
-    render jsonapi: @address, include: [:contact]
+    render jsonapi: @address
   end
 
   private

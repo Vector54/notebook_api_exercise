@@ -23,16 +23,17 @@ RSpec.describe "Addresses", type: :request do
     it "returns http success" do
       @contact.address = Address.create(street: "somewhere", city: "somehow")
 
-      get "/contacts/#{@contact.id}/address", headers: header
+      get "/contacts/#{@contact.id}/address?version=2.0", headers: header
 
       expect(response).to have_http_status(:success)
       expect(response.body).to include "somewhere"
+      expect(response.body).to include "Jailson"
     end 
   end
 
   describe "POST /contacts/1/address" do
     it "creates a new Address" do
-      post "/contacts/#{@contact.id}/address", params: {
+      post "/contacts/#{@contact.id}/address?version=2.0", params: {
         data: {
           type: "addresses",
           attributes: {
@@ -50,7 +51,7 @@ RSpec.describe "Addresses", type: :request do
     end 
 
     it "does not create a new Address" do
-      post "/contacts/#{@contact.id}/address", params: {
+      post "/contacts/#{@contact.id}/address?version=2.0", params: {
         data: {
           type: "addresses",
           attributes: {
@@ -70,7 +71,7 @@ RSpec.describe "Addresses", type: :request do
   describe "PATCH /contacts/1/address" do
     it "updates an existing Address" do
       @contact.address = Address.create(street: "somewhere", city: "somehow")
-      patch "/contacts/#{@contact.id}/address", params: {
+      patch "/contacts/#{@contact.id}/address?version=2.0", params: {
         data: {
           type: "addresses",
           attributes: {
@@ -89,7 +90,7 @@ RSpec.describe "Addresses", type: :request do
 
     it "does not update an existing Address" do
       @contact.address = Address.create(street: "somewhere", city: "somehow")
-      patch "/contacts/#{@contact.id}/address", params: {
+      patch "/contacts/#{@contact.id}/address?version=2.0", params: {
         data: {
           type: "addresses",
           attributes: {

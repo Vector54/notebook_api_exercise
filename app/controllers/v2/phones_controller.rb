@@ -1,4 +1,4 @@
-class PhonesController < ApplicationController
+class V2::PhonesController < ApplicationController
   before_action :set_contact
 
   def destroy
