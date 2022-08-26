@@ -216,11 +216,18 @@ GEM
     timeout (0.3.0)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
+    versionist (2.0.1)
+      activesupport (>= 3)
+      railties (>= 3)
+      yard (~> 0.9.20)
     warden (1.2.9)
       rack (>= 2.0.9)
+    webrick (1.7.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    yard (0.9.28)
+      webrick (~> 1.7.0)
     zeitwerk (2.6.0)
 
 PLATFORMS
@@ -242,6 +249,7 @@ DEPENDENCIES
   rspec-rails
   sqlite3 (~> 1.4)
   tzinfo-data
+  versionist
 
 RUBY VERSION
    ruby 3.1.0p0

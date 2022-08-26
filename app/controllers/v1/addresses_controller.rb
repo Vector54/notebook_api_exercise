@@ -13,7 +13,7 @@ class V1::AddressesController < ApplicationController
     @address = Address.new(address_params.merge({contact: @contact}))
 
     if @address.save
-      render jsonapi: @contact.address, status: :created, location: contact_address_url(@contact.id)
+      render jsonapi: @contact.address, status: :created, location: "http://localhost:2002/contacts/#{@contact.id}/address?version=1.0"
     else
       render jsonapi_errors: @address.errors, status: :unprocessable_entity
     end

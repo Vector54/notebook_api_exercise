@@ -19,7 +19,7 @@ class V2::PhonesController < ApplicationController
     @phone = Phone.new(phone_params.merge({contact: @contact}))
 
     if @phone.save
-      render jsonapi: @phone, status: :created, location: contact_phones_url(@contact.id)
+      render jsonapi: @phone, status: :created, location: "http://localhost:2002/contacts/#{@contact.id}/phones?version=2.0"
     else
       render jsonapi_errors: @phone.errors, status: :unprocessable_entity
     end

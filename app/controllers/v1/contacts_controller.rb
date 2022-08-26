@@ -22,7 +22,7 @@ module V1
       @contact = Contact.new(contact_params)
   
       if @contact.save
-        render jsonapi: @contact, include: [:kind, :phones, :address], status: :created, location: @contact
+        render jsonapi: @contact, include: [:kind, :phones, :address], status: :created, location: "http://localhost:2002/contacts/#{@contact.id}?version=1.0"
       else
         render jsonapi_errors: @contact.errors, status: :unprocessable_entity
       end
