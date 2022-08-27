@@ -48,13 +48,20 @@ RSpec.describe "/contacts", type: :request do
     }
   }
 
+  let(:header) {
+    { 
+      "Accept" => "application/vnd.api+json",
+      "Api-Version" => "1.0" 
+    }
+  }
+
   describe "GET /index" do
     it "renders a successful response" do
       30.times do
         Contact.create! valid_attributes.merge({kind_id: @kind.id})
       end
 
-      get "/contacts?version=1.0", headers: { "ACCEPT" => "application/vnd.api+json" }
+      get "/contacts?version=1.0", headers: header
 
       expect(response).to be_successful
       expect(response.body).to include "\"id\":\"30\""
@@ -65,7 +72,7 @@ RSpec.describe "/contacts", type: :request do
     it "renders a successful response" do
       contact = Contact.create! valid_attributes.merge({kind_id: @kind.id})
 
-      get "/contacts/#{contact.id}?version=1.0", headers: { "ACCEPT" => "application/vnd.api+json" }
+      get "/contacts/#{contact.id}?version=1.0", headers: header
 
       expect(response).to be_successful
       expect(response.body).to include "684864490"
@@ -82,7 +89,7 @@ RSpec.describe "/contacts", type: :request do
             relationships: valid_kind_relation
           }
         }, 
-        headers: { "ACCEPT" => "application/vnd.api+json" }
+        headers: header
 
         expect(response.status).to eq 201
         expect(response.body).to include "Jailson"
@@ -99,7 +106,7 @@ RSpec.describe "/contacts", type: :request do
             relationships: invalid_kind_relation
           }
         }, 
-        headers: { "ACCEPT" => "application/vnd.api+json" }
+        headers: header
 
         expect(response.status).to eq 422
         expect(response.body).not_to include "Jailson"
@@ -147,7 +154,7 @@ RSpec.describe "/contacts", type: :request do
             relationships: new_kind_relation
           }
         }, 
-        headers: { "ACCEPT" => "application/vnd.api+json" }
+        headers: header
 
         contact.reload
 
@@ -168,7 +175,7 @@ RSpec.describe "/contacts", type: :request do
             relationships: invalid_kind_relation
           }
         }, 
-        headers: { "ACCEPT" => "application/vnd.api+json" }
+        headers: header
 
         expect(response.status).to eq 422
         expect(Contact.last.name).to eq "Jailson"
@@ -180,7 +187,7 @@ RSpec.describe "/contacts", type: :request do
     it "destroys the requested contact" do
       contact = Contact.create! valid_attributes.merge({kind_id: @kind.id})
       expect {
-        delete "/contacts/#{contact.id}?version=1.0", headers: { "ACCEPT" => "application/vnd.api+json" }
+        delete "/contacts/#{contact.id}?version=1.0", headers: header
       }.to change(Contact, :count).by(-1)
     end
   end

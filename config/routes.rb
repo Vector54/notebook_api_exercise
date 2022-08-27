@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :kinds
   resources :auths, only: [:create]
 
-  api_version(:module => "V1", :parameter => {:name => "version", :value => "1.0"}) do
+  api_version(:module => "V1", :header => {:name => "Api-Version", :value => "1.0"}) do
     resources :contacts do
       resource :kind, only: [:show]
       resource :kind, only: [:show], path: 'relationships/kind'
@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     end
   end
 
-  api_version(:module => "V2", :parameter => {:name => "version", :value => "2.0"}) do
+  api_version(:module => "V2", :header => {:name => "Api-Version", :value => "2.0"}) do
     resources :contacts do
       resource :kind, only: [:show]
       resource :kind, only: [:show], path: 'relationships/kind'
