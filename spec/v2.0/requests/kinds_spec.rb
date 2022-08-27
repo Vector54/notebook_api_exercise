@@ -8,7 +8,7 @@ RSpec.describe "/kinds", type: :request do
       email: "test@user.com",
       password: "12345678"
     )
-    post "http://localhost:2002/auth/sign_in", params: {
+    post "http://v2.meusite.local:2002/auth/sign_in", params: {
       email: "test@user.com",
       password: "12345678"
     }, headers: { "ACCEPT" => "application/vnd.api+json" }
@@ -29,6 +29,8 @@ RSpec.describe "/kinds", type: :request do
     {not_description: "Carletina"}
   }
 
+  let(:subdomain) { "http://v2.meusite.local:2002" }
+
   let(:header) {
     { 
       "ACCEPT" => "application/vnd.api+json", 
@@ -42,7 +44,7 @@ RSpec.describe "/kinds", type: :request do
     it "renders a successful response" do
       Kind.create! valid_attributes
 
-      get kinds_url, headers: header
+      get "#{subdomain}/kinds", headers: header
 
       expect(response).to be_successful
       expect(response.body).to include "Comercial"
@@ -54,7 +56,7 @@ RSpec.describe "/kinds", type: :request do
       kind = Kind.create! valid_attributes
       kind2 = Kind.create! valid_attributes2
 
-      get "http://www.example.com/kinds/1", headers: header
+      get "#{subdomain}/kinds/1", headers: header
 
       expect(response).to be_successful
       expect(response.body).to include valid_attributes[:description]

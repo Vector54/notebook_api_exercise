@@ -26,9 +26,11 @@ RSpec.describe "Phones", type: :request do
     }
   }
 
+  let(:subdomain) { "http://v2.meusite.local:2002" }
+
   describe "GET /contacts/1/phones" do
     it "returns http success" do
-      get "/contacts/#{@contact.id}/phones", headers: header
+      get "#{subdomain}/contacts/#{@contact.id}/phones", headers: header
 
       expect(response).to have_http_status(:success)
       expect(response.body).to include "684864490"
@@ -38,7 +40,7 @@ RSpec.describe "Phones", type: :request do
 
   describe "POST /contacts/1/phone" do
     it "creates a new Phone" do
-      post "/contacts/#{@contact.id}/phone", params: {
+      post "#{subdomain}/contacts/#{@contact.id}/phone", params: {
         data: {
           type: "phones",
           attributes: {
@@ -54,7 +56,7 @@ RSpec.describe "Phones", type: :request do
     end 
 
     it "does not create a new Phone" do
-      post "/contacts/#{@contact.id}/phone", params: {
+      post "#{subdomain}/contacts/#{@contact.id}/phone", params: {
         data: {
           type: "phones",
           attributes: {
@@ -72,7 +74,7 @@ RSpec.describe "Phones", type: :request do
 
   describe "PATCH /contacts/1/phone" do
     it "updates an existing Phone" do
-      patch "/contacts/#{@contact.id}/phone", params: {
+      patch "#{subdomain}/contacts/#{@contact.id}/phone", params: {
         data: {
           type: "phones",
           id: @contact.phones.first.id,
@@ -89,7 +91,7 @@ RSpec.describe "Phones", type: :request do
     end 
 
     it "does not update an existing Phone" do
-      patch "/contacts/#{@contact.id}/phone", params: {
+      patch "#{subdomain}/contacts/#{@contact.id}/phone", params: {
         data: {
           type: "phones",
           id: @contact.phones.first.id,
@@ -108,7 +110,7 @@ RSpec.describe "Phones", type: :request do
 
   describe "DELETE /contacts/1/phones/1" do
     it "destroys a phone from a contact" do
-      delete "/contacts/#{@contact.id}/phones/#{@contact.phones.first.id}",
+      delete "#{subdomain}/contacts/#{@contact.id}/phones/#{@contact.phones.first.id}",
       headers: header
 
       expect(response.status).to eq 204

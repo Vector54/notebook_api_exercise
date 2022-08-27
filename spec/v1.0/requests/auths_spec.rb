@@ -28,24 +28,15 @@ RSpec.describe "Auths", type: :request do
     }
   }
 
+  let(:subdomain) { "http://v1.meusite.local:2002" }
+
   context "Token creation" do
     describe "POST /create" do
-      context "with valid parameters" do
-        it "creates a new Token" do
-          post auths_url, params: valid_attributes_token, headers: header
+      it "creates a new Token" do
+        post "#{subdomain}/auths", params: valid_attributes_token, headers: header
 
-          expect(response.status).to eq 200
-          expect(response.body).to include "\"token\":"
-        end
-      end
-
-      context "with invalid parameters" do
-        it "does not create a new Token" do
-          post kinds_url, headers: header
-
-          expect(response.status).not_to eq 200
-          expect(response.body).not_to include "\"token\":"
-        end
+        expect(response.status).to eq 200
+        expect(response.body).to include "\"token\":"
       end
     end
   end
@@ -54,7 +45,7 @@ RSpec.describe "Auths", type: :request do
     describe "POST /auth" do
       context "with valid parameters" do
         it "creates a new User" do
-          post "http://www.example.com/auth", params: valid_attributes_user, headers: header
+          post "#{subdomain}/auth", params: valid_attributes_user, headers: header
 
           expect(response.status).to eq 200
           expect(response.body).to include "\"email\":\"josa@pereira.com\""
@@ -63,7 +54,7 @@ RSpec.describe "Auths", type: :request do
 
       context "with invalid parameters" do
         it "does not create a new Token" do
-          post "http://www.example.com/auth", params: invalid_attributes_user, headers: header
+          post "#{subdomain}/auth", params: invalid_attributes_user, headers: header
 
           expect(response.status).to eq 422
           expect(response.body).to include "Confirme sua senha não é igual a Senha"

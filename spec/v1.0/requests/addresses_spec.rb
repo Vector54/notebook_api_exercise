@@ -18,15 +18,16 @@ RSpec.describe "Addresses", type: :request do
   let(:header) {
     { 
       "Accept" => "application/vnd.api+json",
-      "Api-Version" => "1.0" 
     }
   }
+
+  let(:subdomain) { "http://v1.meusite.local:2002" }
 
   describe "GET /contacts/1/address" do
     it "returns http success" do
       @contact.address = Address.create(street: "somewhere", city: "somehow")
 
-      get "/contacts/#{@contact.id}/address", headers: header
+      get "#{subdomain}/contacts/#{@contact.id}/address", headers: header
 
       expect(response).to have_http_status(:success)
       expect(response.body).to include "somewhere"
@@ -36,7 +37,7 @@ RSpec.describe "Addresses", type: :request do
 
   describe "POST /contacts/1/address" do
     it "creates a new Address" do
-      post "/contacts/#{@contact.id}/address", params: {
+      post "#{subdomain}/contacts/#{@contact.id}/address", params: {
         data: {
           type: "addresses",
           attributes: {
@@ -54,7 +55,7 @@ RSpec.describe "Addresses", type: :request do
     end 
 
     it "does not create a new Address" do
-      post "/contacts/#{@contact.id}/address", params: {
+      post "#{subdomain}/contacts/#{@contact.id}/address", params: {
         data: {
           type: "addresses",
           attributes: {
@@ -74,7 +75,7 @@ RSpec.describe "Addresses", type: :request do
   describe "PATCH /contacts/1/address" do
     it "updates an existing Address" do
       @contact.address = Address.create(street: "somewhere", city: "somehow")
-      patch "/contacts/#{@contact.id}/address", params: {
+      patch "#{subdomain}/contacts/#{@contact.id}/address", params: {
         data: {
           type: "addresses",
           attributes: {
@@ -93,7 +94,7 @@ RSpec.describe "Addresses", type: :request do
 
     it "does not update an existing Address" do
       @contact.address = Address.create(street: "somewhere", city: "somehow")
-      patch "/contacts/#{@contact.id}/address", params: {
+      patch "#{subdomain}/contacts/#{@contact.id}/address", params: {
         data: {
           type: "addresses",
           attributes: {

@@ -51,9 +51,11 @@ RSpec.describe "/contacts", type: :request do
   let(:header) {
     { 
       "Accept" => "application/vnd.api+json",
-      "Api-Version" => "2.0" 
+      "Api-Version" => "1.0" 
     }
   }
+
+  let(:subdomain) { "http://v2.meusite.local:2002" }
 
   describe "GET /index" do
     it "renders a successful response" do
@@ -61,7 +63,7 @@ RSpec.describe "/contacts", type: :request do
         Contact.create! valid_attributes.merge({kind_id: @kind.id})
       end
 
-      get "/contacts", headers: header
+      get "#{subdomain}/contacts", headers: header
 
       expect(response).to be_successful
       expect(response.body).not_to include "\"id\":\"11\""
@@ -72,7 +74,7 @@ RSpec.describe "/contacts", type: :request do
     it "renders a successful response" do
       contact = Contact.create! valid_attributes.merge({kind_id: @kind.id})
 
-      get "/contacts/#{contact.id}", headers: header
+      get "#{subdomain}/contacts/#{contact.id}", headers: header
 
       expect(response).to be_successful
       expect(response.body).to include "684864490"
@@ -82,7 +84,7 @@ RSpec.describe "/contacts", type: :request do
   describe "POST /create" do
     context "with valid parameters" do
       it "creates a new Contact" do
-        post "/contacts", params: {
+        post "#{subdomain}/contacts", params: {
           data: {
             type: "contacts",
             attributes: valid_attributes, 
@@ -99,7 +101,7 @@ RSpec.describe "/contacts", type: :request do
 
     context "with invalid parameters" do
       it "does not create a new Contact" do
-        post "/contacts", params: {
+        post "#{subdomain}/contacts", params: {
           data: {
             type: "contacts",
             attributes: invalid_attributes, 
@@ -147,7 +149,7 @@ RSpec.describe "/contacts", type: :request do
 
       it "updates the requested contact" do
         contact = Contact.create! valid_attributes.merge({kind_id: @kind.id})
-        patch "/contacts/#{contact.id}", params: {
+        patch "#{subdomain}/contacts/#{contact.id}", params: {
           data: {
             type: "contacts",
             attributes: new_attributes,
@@ -168,7 +170,7 @@ RSpec.describe "/contacts", type: :request do
       it "does not update the requested contact" do
         contact = Contact.create! valid_attributes.merge({kind_id: @kind.id})
 
-        patch "/contacts/#{contact.id}", params: {
+        patch "#{subdomain}/contacts/#{contact.id}", params: {
           data: {
             type: "contacts",
             attributes: invalid_attributes,
@@ -187,7 +189,7 @@ RSpec.describe "/contacts", type: :request do
     it "destroys the requested contact" do
       contact = Contact.create! valid_attributes.merge({kind_id: @kind.id})
       expect {
-        delete "/contacts/#{contact.id}", headers: header
+        delete "#{subdomain}/contacts/#{contact.id}", headers: header
       }.to change(Contact, :count).by(-1)
     end
   end
