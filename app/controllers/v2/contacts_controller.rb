@@ -44,6 +44,16 @@ module V2
       @contact.destroy
     end
 
+    def jsonapi_object
+      { version: '2.0' }
+    end
+
+    def jsonapi_class
+      super.merge(
+        Kind: V1::SerializableKind
+      )
+    end
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_contact

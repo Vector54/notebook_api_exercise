@@ -43,6 +43,12 @@ module V1
       Address.where(contact: @contact).each {|a| a.destroy}
       @contact.destroy
     end
+
+    def jsonapi_class
+      super.merge(
+        Kind: V1::SerializableKind
+      )
+    end
   
     private
       # Use callbacks to share common setup or constraints between actions.

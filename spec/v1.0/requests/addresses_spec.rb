@@ -21,7 +21,7 @@ RSpec.describe "Addresses", type: :request do
     }
   }
 
-  let(:subdomain) { "http://v1.meusite.local:2002" }
+  let(:subdomain) { "http://v1.meusite.local:2002/v1" }
 
   describe "GET /contacts/1/address" do
     it "returns http success" do

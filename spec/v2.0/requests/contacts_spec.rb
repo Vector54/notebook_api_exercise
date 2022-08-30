@@ -55,7 +55,7 @@ RSpec.describe "/contacts", type: :request do
     }
   }
 
-  let(:subdomain) { "http://v2.meusite.local:2002" }
+  let(:subdomain) { "http://v2.meusite.local:2002/v2" }
 
   describe "GET /index" do
     it "renders a successful response" do

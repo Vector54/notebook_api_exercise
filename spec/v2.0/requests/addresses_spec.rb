@@ -21,7 +21,7 @@ RSpec.describe "Addresses", type: :request do
     }
   }
 
-  let(:subdomain) { "http://v1.meusite.local:2002" }
+  let(:subdomain) { "http://v1.meusite.local:2002/v2" }
 
   describe "GET /contacts/1/address" do
     it "returns http success" do
@@ -31,7 +31,7 @@ RSpec.describe "Addresses", type: :request do
 
       expect(response).to have_http_status(:success)
       expect(response.body).to include "somewhere"
-      expect(response.body).not_to include "Jailson"
+      expect(response.body).to include "Jailson"
     end 
   end
 

@@ -3,7 +3,6 @@ class V1::KindsController < ApplicationController
   # http_basic_authenticate_with name: "Victor", password: "secret"
   # before_action :authenticate, except: [ :index ]
 
-  before_action :authenticate_user!, except: %i[ index ]
   before_action :set_kind, only: %i[ show update destroy ]
 
   # GET /kinds
@@ -41,6 +40,12 @@ class V1::KindsController < ApplicationController
   # DELETE /kinds/1
   def destroy
     @kind.destroy
+  end
+
+  def jsonapi_class
+    super.merge(
+      Kind: V1::SerializableKind
+    )
   end
 
   private

@@ -31,6 +31,10 @@ class V2::PhonesController < ApplicationController
     render jsonapi: @phones
   end
 
+  def jsonapi_object
+    { version: '2.0' }
+  end
+
   private
     def set_contact
       @contact = Contact.find(params[:contact_id])

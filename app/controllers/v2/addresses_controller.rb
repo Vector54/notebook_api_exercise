@@ -25,6 +25,10 @@ class V2::AddressesController < ApplicationController
     render jsonapi: @address, include: [:contact]
   end
 
+  def jsonapi_object
+    { version: '2.0' }
+  end
+
   private
     # Set contact for actions searches.
     def set_contact
