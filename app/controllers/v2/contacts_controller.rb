@@ -4,9 +4,12 @@ module V2
 
     # GET /contacts
     def index
-      @contacts = Contact.all.page(params[:page]).per(10)
+      page_number = params[:page].try(:[], :number)
+      page_size = params[:page].try(:[], :size)
 
-      render jsonapi: @contacts
+      @contacts = Contact.all.page(page_number).per(page_size)
+
+      render jsonapi: @contacts, links: JsonPaginator.call(@contacts, v2_contacts_url)
     end
 
     # GET /contacts/1
@@ -50,7 +53,8 @@ module V2
 
     def jsonapi_class
       super.merge(
-        Kind: V1::SerializableKind
+        Kind: V2::SerializableKind,
+        Contact: V2::SerializableContact
       )
     end
 

@@ -46,7 +46,8 @@ module V1
 
     def jsonapi_class
       super.merge(
-        Kind: V1::SerializableKind
+        Kind: V1::SerializableKind,
+        Contact: V1::SerializableContact
       )
     end
   

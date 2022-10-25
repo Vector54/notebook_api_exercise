@@ -1,4 +1,4 @@
-class SerializableContact < JSONAPI::Serializable::Resource
+class V1::SerializableContact < JSONAPI::Serializable::Resource
   type 'contacts'
 
   attributes :name, :email 
