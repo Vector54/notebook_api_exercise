@@ -4,7 +4,9 @@ module V2
 
     # GET /contacts
     def index
-      @contacts = Contact.all.page(params[:page]).per(10)
+      @contacts = Contact.all.page(params[:page]).per(15)
+
+      response.set_header('Links', HeaderPaginator.call(@contacts, v2_contacts_url))
 
       render jsonapi: @contacts
     end
