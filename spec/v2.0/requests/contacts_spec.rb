@@ -66,7 +66,38 @@ RSpec.describe "/contacts", type: :request do
       get "#{subdomain}/contacts", headers: header
 
       expect(response).to be_successful
+      expect(response.header["Links"]).to include "<http://v2.meusite.local:2002/v2/contacts?page=3>; rel=\"last\", " \
+                                                  "<http://v2.meusite.local:2002/v2/contacts?page=2>; rel=\"next\""
       expect(response.body).not_to include "\"id\":\"11\""
+    end
+
+    it "renders a different page" do
+      30.times do
+        Contact.create! valid_attributes.merge({kind_id: @kind.id})
+      end
+
+      get "#{subdomain}/contacts?page=2", headers: header
+
+      expect(response).to be_successful
+      expect(response.header["Links"]).to include "<http://v2.meusite.local:2002/v2/contacts?page=1>; rel=\"first\", " \
+                                                  "<http://v2.meusite.local:2002/v2/contacts?page=1>; rel=\"prev\", " \
+                                                  "<http://v2.meusite.local:2002/v2/contacts?page=3>; rel=\"last\", " \
+                                                  "<http://v2.meusite.local:2002/v2/contacts?page=3>; rel=\"next\""
+      expect(response.body).not_to include "\"id\":\"10\""
+      expect(response.body).not_to include "\"id\":\"21\""
+    end
+
+    it "renders the last page" do
+      30.times do
+        Contact.create! valid_attributes.merge({kind_id: @kind.id})
+      end
+
+      get "#{subdomain}/contacts?page=3", headers: header
+
+      expect(response).to be_successful
+      expect(response.header["Links"]).to include "<http://v2.meusite.local:2002/v2/contacts?page=1>; rel=\"first\", " \
+                                                  "<http://v2.meusite.local:2002/v2/contacts?page=2>; rel=\"prev\""
+      expect(response.body).not_to include "\"id\":\"20\""
     end
   end
 
