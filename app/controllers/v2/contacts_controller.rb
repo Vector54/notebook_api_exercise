@@ -4,7 +4,7 @@ module V2
 
     # GET /contacts
     def index
-      @contacts = Contact.first(10)
+      @contacts = Contact.all.page(params[:page]).per(10)
 
       render jsonapi: @contacts
     end
