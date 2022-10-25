@@ -63,10 +63,33 @@ RSpec.describe "/contacts", type: :request do
         Contact.create! valid_attributes.merge({kind_id: @kind.id})
       end
 
-      get "#{subdomain}/contacts", headers: header
+      get "#{subdomain}/contacts?page[number]=1&page[size]=10", headers: header
 
       expect(response).to be_successful
       expect(response.body).not_to include "\"id\":\"11\""
+    end
+
+    it "renders a different page" do
+      30.times do
+        Contact.create! valid_attributes.merge({kind_id: @kind.id})
+      end
+
+      get "#{subdomain}/contacts?page[number]=2&page[size]=10", headers: header
+
+      expect(response).to be_successful
+      expect(response.body).not_to include "\"id\":\"10\""
+      expect(response.body).not_to include "\"id\":\"21\""
+    end
+
+    it "renders the last page" do
+      30.times do
+        Contact.create! valid_attributes.merge({kind_id: @kind.id})
+      end
+
+      get "#{subdomain}/contacts?contacts?page[number]=3&page[size]=10", headers: header
+
+      expect(response).to be_successful
+      expect(response.body).not_to include "\"id\":\"20\""
     end
   end
 

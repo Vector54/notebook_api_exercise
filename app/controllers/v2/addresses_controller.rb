@@ -29,6 +29,13 @@ class V2::AddressesController < ApplicationController
     { version: '2.0' }
   end
 
+  def jsonapi_class
+    super.merge(
+      Kind: V2::SerializableKind,
+      Contact: V2::SerializableContact
+    )
+  end
+
   private
     # Set contact for actions searches.
     def set_contact
